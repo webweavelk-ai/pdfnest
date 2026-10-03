@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>How to Reduce PDF File Size — 5 Ways, and Which to Use</title>
+<meta name="description" content="Why PDFs get large, five ways to shrink one, and how to hit an exact upload limit. Honest trade-offs on quality, text selectability and accessibility." />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+<!-- Google Search Console ownership. Also verified via /googlec02981040a625d72.html -->
+<meta name="google-site-verification" content="MPTXUatnEBuKl6VfHohWkZ9-8ZU2jeUbbdv55yPHZaw" />
+<link rel="canonical" href="https://pdfnest.pages.dev/guides/how-to-reduce-pdf-file-size/" />
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png" />
+<meta name="theme-color" content="#0b0f14" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="PDF Nest" />
+<meta property="og:locale" content="en" />
+<meta property="og:title" content="How to Reduce PDF File Size — 5 Ways, and Which to Use" />
+<meta property="og:description" content="Why PDFs get large, five ways to shrink one, and how to hit an exact upload limit. Honest trade-offs on quality, text selectability and accessibility." />
+<meta property="og:url" content="https://pdfnest.pages.dev/guides/how-to-reduce-pdf-file-size/" />
+<meta property="og:image" content="https://pdfnest.pages.dev/og-image.png" />
+<meta property="og:image:width" content="1500" />
+<meta property="og:image:height" content="788" />
+<meta property="og:image:alt" content="Free PDF tools that never upload your files" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="How to Reduce PDF File Size — 5 Ways, and Which to Use" />
+<meta name="twitter:description" content="Why PDFs get large, five ways to shrink one, and how to hit an exact upload limit. Honest trade-offs on quality, text selectability and accessibility." />
+<meta name="twitter:image" content="https://pdfnest.pages.dev/og-image.png" />
+<script>(function(){try{var s=localStorage.getItem("pdfnest-theme");document.documentElement.setAttribute("data-theme",(s==="light"||s==="dark")?s:(window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"));}catch(e){}})();</script>
+<link rel="stylesheet" href="../../assets/styles.css?v=868eb14a9e" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"How to reduce a PDF file size","description":"Why PDFs get large, five ways to shrink one, and how to hit an exact upload limit. Honest trade-offs on quality, text selectability and accessibility.","inLanguage":"en","mainEntityOfPage":"https://pdfnest.pages.dev/guides/how-to-reduce-pdf-file-size/","author":{"@type":"Organization","name":"PDF Nest","url":"https://pdfnest.pages.dev"},"publisher":{"@type":"Organization","name":"PDF Nest","url":"https://pdfnest.pages.dev"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why can a 200-page text report be smaller than a 2-page scan?","acceptedAnswer":{"@type":"Answer","text":"Because text is stored as characters and font references, while a scan is stored as an image of the page. A two-page colour scan at high resolution contains far more raw data than 200 pages of words."}},{"@type":"Question","name":"Does compressing a PDF make the text blurry?","acceptedAnswer":{"@type":"Answer","text":"Only if the pages are re-rendered as images. Lossless re-saving and image downsampling leave text perfectly sharp and selectable."}},{"@type":"Question","name":"What is the best setting for emailing a PDF?","acceptedAnswer":{"@type":"Answer","text":"Aim for under 10 MB, which every major provider accepts. For scans that usually means the middle compression level; for text documents, a lossless re-save is normally enough."}},{"@type":"Question","name":"Can I compress a PDF without losing quality at all?","acceptedAnswer":{"@type":"Answer","text":"You can avoid quality loss, but then the reduction is limited to removing redundant internal data. On a file that was already saved efficiently there may be almost nothing to gain."}},{"@type":"Question","name":"Will compressing remove the password on my PDF?","acceptedAnswer":{"@type":"Answer","text":"No. Compression and encryption are separate concerns. A document that is password-protected to open must be unlocked before it can be processed at all."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://pdfnest.pages.dev/"},{"@type":"ListItem","position":2,"name":"Guides","item":"https://pdfnest.pages.dev/guides/"},{"@type":"ListItem","position":3,"name":"Reduce PDF size","item":"https://pdfnest.pages.dev/guides/how-to-reduce-pdf-file-size/"}]}</script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../../index.html">PDF <span>Nest</span></a>
+  <nav class="site">
+    <a href="../../merge-pdf/index.html">Merge</a>
+    <a href="../../split-pdf/index.html">Split</a>
+    <a href="../../edit-pdf/index.html">Edit</a>
+    <a href="../../compress-pdf/index.html">Compress</a>
+    <a class="opt" href="../../organize-pdf/index.html">Organise</a>
+    <a class="opt" href="../../guides/index.html">Guides</a>
+    <a class="opt" href="../../index.html">All tools</a>
+  </nav>
+  <button id="theme-toggle" class="theme-btn" type="button" aria-label="Switch to light mode"><svg class="i-sun" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="8" r="3.2"/><path d="M8 1v1.8M8 13.2V15M1 8h1.8M13.2 8H15M3.2 3.2l1.3 1.3M11.5 11.5l1.3 1.3M12.8 3.2l-1.3 1.3M4.5 11.5l-1.3 1.3"/></svg><svg class="i-moon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.5 9.6A5.6 5.6 0 0 1 6.4 2.5a5.7 5.7 0 1 0 7.1 7.1z"/></svg></button>
+</div></header>
+<main><div class="wrap">
+  <nav class="crumbs"><a href="../../index.html">Home</a> › <a href="../index.html">Guides</a> › <span>Reduce PDF size</span></nav>
+  <h1>How to reduce a PDF file size</h1>
+  <p class="lede">A PDF that will not attach to an email, or that a portal rejects for being over the limit, is one of the most predictable problems in office work. Here is what actually makes a PDF large, and what genuinely works.</p>
+
+  <h2>The one thing that makes a PDF large</h2>
+  <p>Images. A single A4 page scanned at 600 dpi as an uncompressed bitmap is roughly 50 MB. The same page rendered at 300 dpi as a JPEG is a few hundred kilobytes. The entire text of a 300-page novel, by contrast, is well under a megabyte — text costs almost nothing, which is why a long text-only report can be smaller than a two-page photo scan.</p>
+  <p>So before doing anything, work out which kind of file you have. If it is mostly words, no amount of compression will help much, and the honest answer is that it is already close to as small as it gets. If it came from a scanner or a phone camera, there is usually a great deal of weight to remove.</p>
+  <h2>Five ways to shrink a PDF, in order of how much they help</h2>
+  <p>1. Re-render the pages as images. This is the big hammer. Each page is drawn at a chosen resolution and re-embedded as a JPEG, which discards the original image data entirely. A 40 MB scan routinely lands between 1 and 4 MB. The cost is that text stops being selectable, searchable and readable by a screen reader, and fine print softens. Use it for documents that only need to look right.</p>
+  <p>2. Downsample the images without re-rendering the pages. This keeps text as text and reduces only the image resolution, which is what most desktop tools mean by "compress". It is the best balance when the document mixes text and photos.</p>
+  <p>3. Re-save with tighter internal structure. Lossless, invisible, and worth doing first because it costs nothing. It removes duplicate objects, unused resources and metadata, and re-packs the file's internal streams. On an already-efficient file the gain is a few percent; on a file exported from an old application it can be substantial.</p>
+  <p>4. Remove what you do not need to send. Delete the blank pages, the appendix nobody reads, the embedded fonts for languages the document does not use. Splitting a 2 MB file into two 1 MB files is often the real answer when the limit is 1 MB.</p>
+  <p>5. Convert the images before they ever reach the PDF. If you are building the document yourself, export the images at the size they will be displayed rather than the size they were photographed. This prevents the problem instead of fixing it.</p>
+  <h2>Hitting an exact limit</h2>
+  <p>Portals usually enforce a round number — 100 KB, 500 KB, 2 MB, 5 MB. Work backwards from it. If a scan must come in under 500 KB and it is currently 30 MB, the Strong level will get you there and stay legible. If a text-only document must come in under 100 KB and it is 300 KB, compression may not be enough, and splitting it, or removing embedded fonts and images, is the more honest route.</p>
+  <p>One warning worth taking seriously: re-rendering a document to images makes it unusable for anyone relying on a screen reader, and makes it impossible to search, copy a reference number or fill in a field. If the document has to stay accessible — anything legal, medical, governmental or academic — keep the text as text and accept a larger file.</p>
+  <h2>How to check whether it worked</h2>
+  <p>Any honest compressor tells you the before and after size, and this one does. If a tool claims success without showing you numbers, you cannot tell whether it did anything at all. It is also worth opening the result to confirm the pages still read correctly, especially after the aggressive level — an over-compressed page is easy to spot at a normal zoom, and much harder to spot in a thumbnail.</p>
+
+  <div class="cta">
+    <h2>Do it now, free</h2>
+    <p>Bring a PDF under an upload limit without sending it to anyone. Three levels let you choose between keeping text selectable and squeezing out the smallest possible file.</p>
+    <p><a class="button" href="../../compress-pdf/index.html">Compress PDF files →</a></p>
+    <p class="hint">Runs in your browser. Nothing is uploaded.</p>
+  </div>
+
+  <h2>Questions</h2>
+  <details><summary>Why can a 200-page text report be smaller than a 2-page scan?</summary><p>Because text is stored as characters and font references, while a scan is stored as an image of the page. A two-page colour scan at high resolution contains far more raw data than 200 pages of words.</p></details>
+  <details><summary>Does compressing a PDF make the text blurry?</summary><p>Only if the pages are re-rendered as images. Lossless re-saving and image downsampling leave text perfectly sharp and selectable.</p></details>
+  <details><summary>What is the best setting for emailing a PDF?</summary><p>Aim for under 10 MB, which every major provider accepts. For scans that usually means the middle compression level; for text documents, a lossless re-save is normally enough.</p></details>
+  <details><summary>Can I compress a PDF without losing quality at all?</summary><p>You can avoid quality loss, but then the reduction is limited to removing redundant internal data. On a file that was already saved efficiently there may be almost nothing to gain.</p></details>
+  <details><summary>Will compressing remove the password on my PDF?</summary><p>No. Compression and encryption are separate concerns. A document that is password-protected to open must be unlocked before it can be processed at all.</p></details>
+
+  <h2>All tools</h2>
+  <div class="grid">
+      <a class="card with-ico" href="../../merge-pdf/index.html"><span class="ico"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v7"/><path d="M5 6l3 3 3-3"/><path d="M3 12h10v2H3z"/></svg></span><span><h3>Merge PDF files</h3><p>Combine several PDFs into one file, in the order you choose.</p></span></a>
+<a class="card with-ico" href="../../split-pdf/index.html"><span class="ico"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 2h10v3H3z"/><path d="M5 5v4"/><path d="M3 8.5l2 2 2-2"/><path d="M11 5v4"/><path d="M9 8.5l2 2 2-2"/></svg></span><span><h3>Split PDF files</h3><p>Break one PDF into separate files, or pull out only the pages you need.</p></span></a>
+<a class="card with-ico" href="../../organize-pdf/index.html"><span class="ico"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 2h5v5H2zM9 2h5v5H9zM2 9h5v5H2zM9 9h5v5H9z"/></svg></span><span><h3>Delete, reorder and rotate PDF pages</h3><p>Delete, reorder, rotate and duplicate pages in a visual grid.</p></span></a>
+<a class="card with-ico" href="../../edit-pdf/index.html"><span class="ico"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13v-2.2L10.8 3a1.2 1.2 0 0 1 1.7 0l.9.9a1.2 1.2 0 0 1 0 1.7L5.6 13z"/><path d="M9.6 4.2l2.2 2.2"/></svg></span><span><h3>Edit PDF files</h3><p>Add text, a signature, white-out, a watermark or page numbers.</p></span></a>
+<a class="card with-ico" href="../../compress-pdf/index.html"><span class="ico"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v5"/><path d="M6 5l2 2 2-2"/><path d="M8 14v-5"/><path d="M6 11l2-2 2 2"/></svg></span><span><h3>Compress PDF files</h3><p>Cut file size for email and upload limits — three levels of compression.</p></span></a>
+<a class="card with-ico" href="../../pdf-to-images/index.html"><span class="ico"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 2h6l4 4v8H3z"/><circle cx="6.5" cy="9.5" r="1.2"/><path d="M4.5 13l2.5-2.5 2 2L11 10l2 2"/></svg></span><span><h3>Convert PDF to images</h3><p>Export every page as a PNG or JPG, delivered as a ZIP.</p></span></a>
+<a class="card with-ico" href="../../images-to-pdf/index.html"><span class="ico"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h7v7H2z"/><circle cx="4.5" cy="5.5" r="1"/><path d="M2.5 9.5l2-2 1.5 1.5L8 7l1 2"/><path d="M11 4l3-1v10l-3-1z"/></svg></span><span><h3>Convert images to PDF</h3><p>Turn JPG, PNG or WEBP images into a single PDF document.</p></span></a>
+<a class="card with-ico" href="../../rotate-pdf/index.html"><span class="ico"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.5 8a5.5 5.5 0 1 1-1.9-4.2"/><path d="M13.5 2v3h-3"/></svg></span><span><h3>Rotate PDF pages</h3><p>Fix sideways or upside-down scans, for all pages or a few.</p></span></a>
+  </div>
+</div></main>
+<footer class="site"><div class="wrap">
+  <div>
+    <p style="margin:0 0 6px">Files never leave your device. No upload, no account, no watermark.</p>
+    <p style="margin:0"><a href="../../merge-pdf/index.html">Merge PDF</a> · <a href="../../split-pdf/index.html">Split PDF</a> · <a href="../../organize-pdf/index.html">Organise pages</a> · <a href="../../edit-pdf/index.html">Edit</a> · <a href="../../compress-pdf/index.html">Compress PDF</a> · <a href="../../pdf-to-images/index.html">PDF to Images</a> · <a href="../../images-to-pdf/index.html">Images to PDF</a> · <a href="../../rotate-pdf/index.html">Rotate</a></p>
+    <p style="margin:4px 0 0"><a href="../../guides/how-to-reduce-pdf-file-size/index.html">Reduce PDF size</a> · <a href="../../guides/merge-pdf-on-iphone-android-windows/index.html">Merge on any device</a> · <a href="../../guides/how-to-sign-a-pdf/index.html">Sign a PDF</a> · <a href="../../guides/how-to-delete-a-page-from-a-pdf/index.html">Delete PDF pages</a></p>
+    <p style="margin:4px 0 0"><a href="../../about/index.html">About</a> ·
+      <a href="../../privacy/index.html">Privacy</a></p>
+  </div>
+  <span>© <span id="year"></span> PDF Nest</span>
+</div></footer>
+<script>
+  window.PDFSTUDIO_BASE = "../../";
+  window.PDFSTUDIO_WORKER_V = "feabdf3097";
+  window.PDFSTUDIO_ASSETS = {"pdf-lib":"../../assets/vendor/pdf-lib.min.js?v=0f9a5cad07","pdfjs":"../../assets/vendor/pdf.min.js?v=5b5799e6f8","jszip":"../../assets/vendor/jszip.min.js?v=acc7e41455"};
+</script>
+<script src="../../assets/engine.js?v=4f9a854a44"></script>
+<script src="../../assets/app.js?v=7b6eacbd94"></script>
+<script src="../../assets/theme.js?v=8a5880deea"></script>
+
+</body>
+</html>
+<script>document.getElementById("year").textContent = new Date().getFullYear();</script>

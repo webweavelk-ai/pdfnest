@@ -1,0 +1,437 @@
+:root{
+  color-scheme:dark;
+  --bg:#0b0f14;        --glow:#16233a;
+  --panel:#121821;     --panel-2:#171f2a;
+  --line:#233043;      --line-soft:#1a2431;   --line-2:#2a3444;
+  --text:#e7eef7;      --muted:#8d9cb0;       --faint:#5b6b80;
+  --faint-2:#4e5c72;   --faint-3:#3f4b5e;
+  --chip:#c9d6e6;      --dot:#2b3a4f;
+  --inset:#0d131c;     --inset-2:#0e1724;     --track:#111c2b;
+  --ico-bg:#141d2a;    --btn-quiet:#0f1620;
+  --mock-a:#131b26;    --mock-b:#0e1420;
+  --cta-a:#132038;     --cta-b:#101a28;
+  --ok-bg:#0f2419;     --ok-line:#1d5c40;     --ok-text:#a7f3d0;
+  --bad-bg:#2a1416;    --bad-line:#5b2226;    --bad-text:#ffb3b3;
+  --accent:#4f8cff;    --accent-2:#22c98b;    --danger:#ff6b6b;
+  --header-bg:rgba(11,15,20,.82);
+  --ad-bg:rgba(255,255,255,.014);
+  --radius:14px; --maxw:940px;
+}
+
+/* Same layout, inverted surfaces. Every colour above has a counterpart here, so
+   nothing has to be special-cased in a component rule. */
+[data-theme="light"]{
+  color-scheme:light;
+  --bg:#f6f8fb;        --glow:#dce7f7;
+  --panel:#ffffff;     --panel-2:#f3f6fa;
+  --line:#d6dee9;      --line-soft:#e6ebf2;   --line-2:#c3cedb;
+  --text:#0e1720;      --muted:#5a6a7e;       --faint:#7e8b9c;
+  --faint-2:#8c98a8;   --faint-3:#9aa5b4;
+  --chip:#26313f;      --dot:#c4ceda;
+  --inset:#eef2f7;     --inset-2:#e9eef5;     --track:#dde4ec;
+  --ico-bg:#eaf0f9;    --btn-quiet:#eef2f7;
+  --mock-a:#ffffff;    --mock-b:#f5f8fc;
+  --cta-a:#eaf1fb;     --cta-b:#f4f7fc;
+  --ok-bg:#e6f7ee;     --ok-line:#a9dfc4;     --ok-text:#0d6640;
+  --bad-bg:#fdeceb;    --bad-line:#f0b8b4;    --bad-text:#8f2018;
+  --accent:#2563eb;    --accent-2:#0f9d63;    --danger:#c0392b;
+  --header-bg:rgba(246,248,251,.85);
+  --ad-bg:rgba(13,22,32,.02);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:radial-gradient(1200px 600px at 50% -10%,var(--glow) 0%,var(--bg) 60%);
+  color:var(--text);font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  min-height:100vh;display:flex;flex-direction:column;
+}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px;width:100%}
+header.site{border-bottom:1px solid var(--line);background:var(--header-bg);backdrop-filter:blur(8px);
+  position:sticky;top:0;z-index:20}
+header.site .wrap{display:flex;align-items:center;justify-content:space-between;height:58px}
+.brand{font-weight:700;letter-spacing:-.01em;color:var(--text);font-size:17px}
+.brand span{color:var(--accent)}
+nav.site a{margin-left:18px;font-size:14.5px;color:var(--muted)}
+nav.site a:hover{color:var(--text)}
+main{flex:1;padding:44px 0 60px}
+h1{font-size:clamp(26px,4.4vw,38px);letter-spacing:-.02em;margin:0 0 12px;line-height:1.2}
+h2{font-size:21px;margin:38px 0 12px;letter-spacing:-.01em}
+h3{font-size:16px;margin:22px 0 6px}
+.lede{color:var(--muted);font-size:17px;max-width:70ch;margin:0 0 8px}
+.pill{display:inline-block;background:var(--ok-bg);border:1px solid var(--ok-line);color:var(--ok-text);
+  font-size:13px;padding:4px 11px;border-radius:999px;margin-bottom:18px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px;margin-top:24px}
+.drop{border:2px dashed var(--line);border-radius:var(--radius);padding:38px 20px;text-align:center;cursor:pointer;transition:.15s}
+.drop:hover,.drop.over{border-color:var(--accent);background:var(--inset-2)}
+.drop strong{display:block;margin-bottom:6px;font-size:16px}
+.hint{color:var(--muted);font-size:13.5px}
+input[type=file]{display:none}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:16px;max-width:100%}
+label.field{font-size:13.5px;color:var(--muted);display:flex;flex-direction:column;gap:5px;
+  min-width:0;max-width:100%}
+/* A native <select> sizes itself to its widest <option> — on the compress page
+   that pushed the control past a 375px viewport. Bound both to the column. */
+select,input[type=text]{background:var(--panel-2);color:var(--text);border:1px solid var(--line);
+  border-radius:10px;padding:10px 12px;font-size:14px;width:100%;max-width:100%;box-sizing:border-box}
+button{background:var(--accent);color:#fff;border:0;border-radius:10px;padding:12px 22px;
+  font-size:15px;font-weight:600;cursor:pointer;transition:.15s opacity}
+button:hover:not(:disabled){opacity:.9}
+button:disabled{opacity:.45;cursor:not-allowed}
+button.ghost{background:var(--line-2)}
+button.link{background:none;color:var(--danger);padding:0;font-weight:400;font-size:13.5px}
+.files{margin-top:14px;display:flex;flex-direction:column;gap:6px}
+.files .item{background:var(--panel-2);border:1px solid var(--line);border-radius:9px;
+  padding:8px 12px;font-size:13.5px;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.bar{height:6px;background:var(--panel-2);border-radius:99px;overflow:hidden;margin-top:16px;display:none}
+.bar.on{display:block}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .15s}
+.msg{margin-top:16px;padding:12px 14px;border-radius:10px;font-size:14px;display:none;white-space:pre-wrap}
+.msg.err{display:block;background:var(--bad-bg);border:1px solid var(--bad-line);color:var(--bad-text)}
+.msg.ok{display:block;background:var(--ok-bg);border:1px solid var(--ok-line);color:var(--ok-text)}
+.msg.info{display:block;background:var(--track);border:1px solid var(--line);color:var(--muted)}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));margin:26px 0 0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px;transition:.15s}
+.card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.card h3{margin:0 0 6px;font-size:15.5px;color:var(--text)}
+.card p{margin:0;color:var(--muted);font-size:13.5px}
+.steps{counter-reset:s;list-style:none;padding:0;margin:0}
+.steps li{counter-increment:s;position:relative;padding:0 0 14px 40px;color:var(--muted)}
+.steps li::before{content:counter(s);position:absolute;left:0;top:0;width:26px;height:26px;border-radius:50%;
+  background:var(--panel-2);border:1px solid var(--line);color:var(--text);font-size:13px;
+  display:flex;align-items:center;justify-content:center;font-weight:600}
+.steps li strong{color:var(--text);display:block}
+details{border:1px solid var(--line);border-radius:10px;padding:12px 16px;margin-bottom:8px;background:var(--panel)}
+details summary{cursor:pointer;font-weight:600;font-size:15px}
+details p{color:var(--muted);margin:10px 0 0;font-size:14.5px}
+.pro{background:linear-gradient(90deg,var(--cta-a),var(--cta-b));border:1px solid var(--line);border-radius:var(--radius);
+  padding:20px;margin-top:34px}
+.pro h2{margin-top:0}
+.pro table{width:100%;border-collapse:collapse;font-size:14.5px}
+.pro th,.pro td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);color:var(--muted)}
+.pro th{color:var(--text);font-size:13.5px;text-transform:uppercase;letter-spacing:.04em}
+footer.site{border-top:1px solid var(--line);padding:26px 0;color:var(--muted);font-size:13.5px}
+footer.site .wrap{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center}
+footer.site a{color:var(--muted)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.crumbs{font-size:13.5px;color:var(--muted);margin-bottom:14px}
+.crumbs a{color:var(--muted)}
+.crumbs span{color:var(--text)}
+
+/* Wide tables scroll inside their own box instead of widening the page. */
+.tablewrap{overflow-x:auto;margin-top:16px;border:1px solid var(--line);border-radius:var(--radius)}
+.tablewrap table{min-width:540px}
+table.compare,table.simple{width:100%;border-collapse:collapse;font-size:14.5px}
+table.compare th,table.compare td,table.simple th,table.simple td{
+  text-align:left;padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+table.compare th,table.simple th{color:var(--text);font-size:13px;text-transform:uppercase;letter-spacing:.04em}
+table.compare td,table.simple td{color:var(--muted)}
+table.compare td:first-child{color:var(--text);font-weight:600}
+table tr:last-child td{border-bottom:0}
+
+.cta{background:linear-gradient(90deg,var(--cta-a),var(--cta-b));border:1px solid var(--line);
+  border-radius:var(--radius);padding:22px;margin-top:34px}
+.cta h2{margin-top:0}
+a.button{display:inline-block;background:var(--accent);color:#fff;border-radius:10px;
+  padding:12px 22px;font-weight:600}
+a.button:hover{opacity:.9;text-decoration:none}
+
+/* =====================================================================
+   Home page
+   ===================================================================== */
+
+/* A sticky, slightly translucent header with a backdrop blur. Cheap, and it
+   does more for perceived polish than anything else on the page. */
+header.site{position:sticky;top:0;z-index:20;background:var(--header-bg);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+
+/* --- hero --- */
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line);
+  min-height:min(86svh,800px);display:flex;align-items:center;padding:74px 0 66px}
+#hero-canvas{position:absolute;inset:0;pointer-events:none;
+  -webkit-mask-image:linear-gradient(to bottom,#000 52%,transparent 100%);
+  mask-image:linear-gradient(to bottom,#000 52%,transparent 100%)}
+.hero .wrap{position:relative;z-index:1;max-width:1080px;display:grid;gap:48px;
+  grid-template-columns:minmax(0,1.04fr) minmax(0,.96fr);align-items:center}
+.hero h1{font-size:clamp(38px,5.2vw,66px);line-height:1.05;letter-spacing:-.03em;
+  font-weight:800;margin:0 0 20px}
+.hero .sub{font-size:clamp(16px,1.5vw,18.5px);line-height:1.62;color:var(--muted);
+  margin:0 0 26px;max-width:44ch}
+.hero .cta{display:flex;gap:12px;flex-wrap:wrap;margin:0 0 26px}
+.hero .checks{list-style:none;padding:0;margin:0;display:grid;gap:9px;
+  font-size:14.5px;color:var(--muted)}
+.hero .checks li{display:flex;gap:10px;align-items:flex-start}
+.hero .checks svg{flex:0 0 15px;margin-top:4px;color:var(--accent-2)}
+
+a.btn{display:inline-block;background:var(--accent);color:#fff;border-radius:11px;
+  padding:13px 24px;font-weight:600;font-size:15px}
+a.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+a.btn:hover{opacity:.92;text-decoration:none}
+a.btn.ghost:hover{border-color:var(--accent);opacity:1}
+
+/* --- the mock: makes the privacy claim concrete instead of abstract --- */
+.mock{background:linear-gradient(180deg,var(--mock-a),var(--mock-b));border:1px solid var(--line);
+  border-radius:16px;padding:14px 15px 16px;box-shadow:0 26px 60px rgba(0,0,0,.5)}
+.mock .bar{display:flex;align-items:center;gap:7px;padding-bottom:11px;
+  border-bottom:1px solid var(--line);margin-bottom:13px}
+.mock .bar i{width:9px;height:9px;border-radius:50%;background:var(--dot)}
+.mock .bar span{margin-left:auto;font:12px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  color:var(--muted)}
+.mock .row{display:flex;align-items:center;gap:10px;padding:8px 0;
+  font:13px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--muted);
+  border-bottom:1px solid var(--line-soft)}
+.mock .row:last-child{border-bottom:0}
+.mock .row b{color:var(--text);font-weight:600}
+.mock .row .ok{margin-left:auto;color:var(--ok-text)}
+.mock .head{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.mock .head em{font-style:normal;font-size:12px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--faint)}
+.mock .pill-ok{background:var(--ok-bg);border:1px solid var(--ok-line);color:var(--ok-text);
+  font-size:11.5px;padding:3px 9px;border-radius:999px}
+
+/* --- marquee strip --- */
+.strip{border-bottom:1px solid var(--line);padding:20px 0;overflow:hidden}
+.strip .wrap{max-width:1080px}
+.strip .cap{font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--faint);margin:0 0 12px}
+.marquee{position:relative;overflow:hidden;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)}
+/* The track holds the list twice and slides by exactly half its own width, so the
+   second copy lands where the first began — a seamless loop with no JavaScript. */
+.marquee .track{display:flex;gap:11px;width:max-content;animation:slide 48s linear infinite}
+.marquee ul{display:flex;gap:11px;list-style:none;margin:0;padding:0}
+.marquee:hover .track{animation-play-state:paused}
+.marquee li{background:var(--panel);border:1px solid var(--line);border-radius:11px;
+  padding:10px 17px;font-size:14px;color:var(--chip);white-space:nowrap}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+/* --- tool + guide cards --- */
+.grid .card.with-ico{display:flex;gap:13px;align-items:flex-start;text-align:left}
+.card .ico{flex:0 0 38px;height:38px;border-radius:11px;display:grid;place-items:center;
+  background:var(--ico-bg);border:1px solid var(--line);color:var(--accent)}
+.card .ico svg{width:20px;height:20px;display:block}
+.grid .card{transition:transform .2s ease,border-color .2s ease}
+@media (hover:hover){
+  .grid .card:hover{transform:translateY(-3px)}
+}
+
+/* --- reserved advertising space ---
+   The height is FIXED rather than automatic. An ad that appears and pushes the
+   page down is a layout shift, and Cumulative Layout Shift is one of the three
+   Core Web Vitals Google scores — so the slot has to be reserved before the ad
+   exists. Delete a slot and you delete the shift protection with it. */
+.ad{margin:32px 0;border:1px dashed var(--line);border-radius:var(--radius);
+  min-height:124px;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:6px;background:var(--ad-bg);
+  color:var(--faint-2);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase}
+.ad span{font-size:11px;letter-spacing:.04em;text-transform:none;color:var(--faint-3)}
+
+/* --- entrance animation: 5 staggered steps, pure CSS, nothing to load --- */
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.rise{animation:rise .8s cubic-bezier(.2,.7,.2,1) both}
+
+/* The headline is the Largest Contentful Paint element, and an element painted at
+   opacity 0 is not a contentful paint — animating it in from invisible delays the
+   metric Google actually scores. So the H1 moves but never fades. */
+@keyframes rise-lcp{from{transform:translateY(12px)}to{transform:none}}
+.rise-lcp{animation:rise-lcp .7s cubic-bezier(.2,.7,.2,1) both}
+.rise-1{animation-delay:.06s}
+.rise-2{animation-delay:.14s}
+.rise-3{animation-delay:.2s}
+.rise-4{animation-delay:.26s}
+.rise-5{animation-delay:.32s}
+
+/* ---- page organiser ---- */
+.workspace{display:none;margin-top:18px}
+.workspace.on{display:block}
+.pagebar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
+.pagebar .count{font-size:13.5px;color:var(--muted);margin-right:auto}
+.pagebar button{background:var(--panel-2);color:var(--text);border:1px solid var(--line);
+  border-radius:9px;padding:8px 13px;font-size:13.5px;cursor:pointer}
+.pagebar button:hover:not(:disabled){border-color:var(--accent)}
+.pagebar button:disabled{opacity:.4;cursor:default}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:12px}
+.pcard{position:relative;background:var(--panel-2);border:1px solid var(--line);border-radius:12px;
+  padding:9px;display:flex;flex-direction:column;gap:8px}
+.pcard.sel{border-color:var(--accent)}
+.pcard .chk{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--muted);cursor:pointer}
+.pcard .chk span{color:var(--text);font-weight:600}
+.pcard .thumb{height:150px;display:flex;align-items:center;justify-content:center;
+  background:var(--inset);border-radius:8px;overflow:hidden}
+.pcard .thumb canvas{max-width:100%;max-height:150px;width:auto;height:auto;display:block}
+.pcard .rot{position:absolute;top:34px;right:14px;background:var(--ok-bg);border:1px solid var(--ok-line);
+  color:var(--ok-text);font-size:11.5px;padding:2px 7px;border-radius:999px}
+.pcard .pacts{display:flex;gap:4px}
+.pcard .pacts button{flex:1;background:var(--btn-quiet);color:var(--muted);border:1px solid var(--line);
+  border-radius:7px;padding:5px 0;font-size:13px;line-height:1;cursor:pointer}
+.pcard .pacts button:hover:not(:disabled){color:var(--text);border-color:var(--accent)}
+.pcard .pacts button:disabled{opacity:.35;cursor:default}
+
+@media (max-width:560px){
+  .pgrid{grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:9px}
+  .pcard .thumb{height:118px}
+  .pcard .thumb canvas{max-height:118px}
+  .pcard .pacts button{font-size:12px}
+  .pagebar button{padding:8px 11px}
+}
+
+@media (max-width:560px){
+  header.site .wrap{height:auto;padding-top:10px;padding-bottom:10px;gap:8px}
+  /* Four visible links have to fit beside the logo on a 375px screen. */
+  nav.site a{margin-left:10px;font-size:12.5px}
+  nav.site a.opt{display:none}
+  main{padding:30px 0 44px}
+  /* One control per line, so width:100% resolves against a definite width. */
+  label.field{flex:1 1 100%}
+  .panel{padding:16px}
+  .drop{padding:28px 14px}
+}
+
+/* =====================================================================
+   Home page — narrow screens
+   ===================================================================== */
+@media (max-width:880px){
+  .hero{min-height:0;padding:44px 0 48px}
+  .hero .wrap{grid-template-columns:minmax(0,1fr);gap:32px}
+  .hero .sub{max-width:none}
+  .mock{order:2}
+  .strip{padding:16px 0}
+}
+@media (max-width:560px){
+  .ad{min-height:100px;margin:24px 0}
+  .marquee li{padding:9px 14px;font-size:13px}
+  .hero h1{margin-bottom:14px}
+}
+
+/* =====================================================================
+   prefers-reduced-motion
+   The hero canvas already refuses to start a loop under this setting, so
+   everything here is the CSS half: no entrance animation, no marquee drift.
+   ===================================================================== */
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .rise,.rise-lcp{animation:none}
+  .marquee .track{animation:none;flex-wrap:wrap;width:auto}
+  .grid .card{transition:none}
+  a.btn{transition:none}
+}
+
+/* =====================================================================
+   Theme toggle
+   The icon shows what a click will switch TO: a sun while dark, a moon while
+   light. Both icons live in the button and CSS picks one, so the two themes
+   never disagree about which is showing.
+   ===================================================================== */
+.theme-btn{margin-left:14px;background:transparent;border:1px solid var(--line);
+  border-radius:9px;width:34px;height:30px;display:grid;place-items:center;
+  color:var(--muted);cursor:pointer;padding:0}
+.theme-btn:hover{border-color:var(--accent);color:var(--text)}
+.theme-btn svg{width:15px;height:15px;display:block}
+.theme-btn .i-moon{display:none}
+[data-theme="light"] .theme-btn .i-sun{display:none}
+[data-theme="light"] .theme-btn .i-moon{display:block}
+
+/* Shadows and glows that would look wrong inverted. */
+[data-theme="light"] .mock{box-shadow:0 18px 44px rgba(13,22,32,.1)}
+[data-theme="light"] #hero-canvas{opacity:.85}
+[data-theme="light"] header.site{box-shadow:0 1px 0 var(--line)}
+
+@media (max-width:560px){
+  .theme-btn{margin-left:8px;width:30px;height:28px}
+}
+
+/* =====================================================================
+   Annotation editor (tool 8)
+   The page is drawn to a canvas; everything placed on it is an absolutely
+   positioned element inside .ed-overlay, whose box is sized to the canvas, so
+   a viewport coordinate is a CSS coordinate and the maths stays in one place.
+   ===================================================================== */
+.ed{margin-top:16px}
+.ed-bar{display:flex;flex-wrap:wrap;gap:8px}
+.ed-t{display:flex;flex-direction:column;align-items:center;gap:3px;background:var(--panel-2);
+  color:var(--muted);border:1px solid var(--line);border-radius:10px;padding:9px 13px;
+  font-size:11.5px;cursor:pointer;min-width:78px;transition:.15s}
+.ed-t b{font-size:15px;line-height:1;font-weight:600;color:var(--text)}
+.ed-t em{font-style:normal;white-space:nowrap}
+.ed-t:hover{border-color:var(--accent);color:var(--text)}
+.ed-t.on{border-color:var(--accent);background:var(--cta-a);color:var(--text)}
+.ed-t.on b{color:var(--accent)}
+.ed-t[hidden]{display:none}
+
+.ed-hint{font-size:13.5px;color:var(--muted);margin:12px 0 0}
+.ed-props{margin-top:14px}
+.ed-props:empty{display:none}
+.ed-ptitle{font-size:12.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--faint);
+  margin:0 0 10px;font-weight:600}
+.ed-ptitle .hint{text-transform:none;letter-spacing:0;font-weight:400}
+.ed-props .row{margin-top:12px}
+.ed-props .field{flex:1 1 128px}
+.ed-props input[type=color]{width:100%;max-width:74px;height:38px;padding:3px;
+  background:var(--panel-2);border:1px solid var(--line);border-radius:10px;cursor:pointer}
+.ed-props input[type=range]{width:100%;padding:0;border:0;background:transparent;
+  accent-color:var(--accent);height:38px}
+.ed-props input[type=text]:disabled{opacity:.6}
+.ed-check{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--text);
+  white-space:nowrap;cursor:pointer}
+.ed-check input{accent-color:var(--accent);width:16px;height:16px}
+
+.ed-warn{display:none;margin-top:12px;padding:11px 13px;border-radius:10px;font-size:13.5px;
+  background:var(--bad-bg);border:1px solid var(--bad-line);color:var(--bad-text)}
+.ed-warn.on{display:block}
+
+.ed-stage{margin-top:14px;overflow:auto;background:var(--inset);border:1px solid var(--line);
+  border-radius:12px;padding:12px;max-height:min(78vh,900px);-webkit-overflow-scrolling:touch}
+/* The scroll container must not be the positioned ancestor, or the overlay would
+   stay put while the page scrolled underneath it. Hence the inner wrapper. */
+.ed-inner{position:relative;margin:0 auto;background:#fff;box-shadow:0 6px 22px rgba(0,0,0,.3)}
+[data-theme="light"] .ed-inner{box-shadow:0 4px 16px rgba(13,22,32,.12)}
+#ed-canvas{display:block}
+.ed-overlay{position:absolute;inset:0}
+.ed-overlay.placing{cursor:crosshair}
+
+.ed-el{position:absolute;box-sizing:border-box;outline:1px dashed transparent;outline-offset:2px;
+  touch-action:none}
+.ed-el.ed-text{white-space:pre;cursor:move}
+.ed-el.ed-image,.ed-el.ed-rect{cursor:move}
+.ed-el.ed-image img{width:100%;height:100%;display:block;object-fit:fill;pointer-events:none}
+.ed-el.ed-rect{background:#fff}
+@media (hover:hover){
+  .ed-el:hover{outline-color:var(--faint-3)}
+}
+.ed-el.sel{outline:1px solid var(--accent)}
+.ed-ghost{background:rgba(79,140,255,.18);border:1px dashed var(--accent);pointer-events:none}
+.ed-h{position:absolute;right:-6px;bottom:-6px;width:14px;height:14px;border-radius:4px;
+  background:var(--accent);border:2px solid var(--bg);cursor:nwse-resize;touch-action:none}
+.ed-wm{pointer-events:none;white-space:nowrap;font-weight:700;letter-spacing:.03em}
+.ed-pn{pointer-events:none;font-family:Helvetica,Arial,sans-serif;line-height:1}
+
+.ed-items{margin-top:14px}
+.ed-row{display:flex;align-items:center;gap:10px;background:var(--panel-2);border:1px solid var(--line);
+  border-radius:9px;padding:8px 12px;font-size:13.5px;margin-bottom:6px}
+.ed-row.sel{border-color:var(--accent)}
+.ed-row .ed-k{color:var(--faint);text-transform:uppercase;font-size:11px;letter-spacing:.06em;
+  min-width:46px}
+.ed-row .ed-d{color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;
+  white-space:nowrap}
+.ed-row .link{background:none;border:0;color:var(--accent);padding:0;font-weight:400;
+  font-size:13px;cursor:pointer;white-space:nowrap}
+.ed-row .link:hover{text-decoration:underline}
+
+.ed-nav{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px}
+.ed-nav button.ghost{padding:8px 13px;font-size:13px}
+.ed-nav #ed-pageno{font-size:13.5px;color:var(--text);font-weight:600}
+.ed-zoom{font-size:12px;max-width:132px}
+.ed-zoom select{padding:7px 9px;font-size:13px}
+.ed-nav .hint{margin-left:auto}
+
+@media (max-width:700px){
+  .ed-bar .ed-t{flex:1 1 calc(50% - 4px);min-width:0}
+  .ed-bar{gap:6px}
+  .ed-stage{padding:8px;max-height:62vh}
+  .ed-h{width:20px;height:20px;right:-10px;bottom:-10px}
+  .ed-nav .hint{margin-left:0;flex:1 1 100%}
+  .ed-row{flex-wrap:wrap}
+}

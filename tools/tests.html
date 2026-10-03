@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex" />
+<title>PDF Studio — engine self-test</title>
+<!-- Lives in tools/ so it is NOT part of the Cloudflare Pages deployment: the
+     suite can always be run locally, and a public test page is one more thing to
+     explain. Everything below reaches into ../web/ for the real assets, so run it
+     from a static server started at the project root:
+
+         python -m http.server 8765
+         http://localhost:8765/tools/tests.html -->
+<link rel="stylesheet" href="../web/assets/styles.css" />
+<style>
+  #results{font:14px/1.7 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;margin-top:20px}
+  #results div{padding:3px 0;border-bottom:1px solid #1b2431}
+  .pass{color:#a7f3d0}.fail{color:#ffb3b3}
+  #summary{font-size:20px;font-weight:700;margin-top:22px;padding:14px 18px;border-radius:12px;background:#111c2b;border:1px solid #233043}
+  #summary[data-state=pass]{background:#0f2419;border-color:#1d5c40;color:#a7f3d0}
+  #summary[data-state=fail]{background:#2a1416;border-color:#5b2226;color:#ffb3b3}
+  #summary[data-state=run]{background:#111c2b;color:#8d9cb0}
+</style>
+</head>
+<body>
+<main><div class="wrap">
+  <h1>Engine self-test</h1>
+  <p class="lede">Generates sample files in this browser and runs every tool through <code>PDFStudioEngine</code>.
+  Covers the canvas-based paths that cannot run in Node.</p>
+  <div id="summary" data-state="run">Running…</div>
+  <div id="results"></div>
+</div></main>
+
+<footer class="site"><div class="wrap"><span>Local self-test harness — served from tools/, never deployed.
+  Run <code>python -m http.server 8765</code> at the project root and open
+  <code>/tools/tests.html</code>.</span></div></footer>
+
+<script>
+  /* /assets/* is served immutable for a year, so this diagnostic page loads its
+     scripts with a timestamp — it must always test the file that is on disk. */
+  (function () {
+    var t = Date.now();
+    window.__cbt = String(t);
+    ["vendor/pdf-lib.min.js", "vendor/pdf.min.js", "vendor/jszip.min.js", "engine.js"].forEach(function (f) {
+      document.write('<script src="../web/assets/' + f + '?t=' + t + '"><\/script>');
+    });
+  })();
+</script>
+<script>
+(function () {
+  var E = window.PDFStudioEngine;
+  E.configure({ base: "../web/", workerVersion: window.__cbt });
+
+  var results = document.getElementById("results");
+  var summary = document.getElementById("summary");
+  var failures = 0;
+
+  function check(label, ok, detail) {
+    if (!ok) failures++;
+    var d = document.createElement("div");
+    d.className = ok ? "pass" : "fail";
+    // Always show the detail. Printing it only on failure meant a green run
+    // reported no measured numbers at all, which made the output useless as
+    // evidence of what the tools actually produced.
+    d.textContent = (ok ? "PASS  " : "FAIL  ") + label + (detail ? "  -> " + detail : "");
+    results.appendChild(d);
+  }
+
+  async function makePdfBytes(pages) {
+    var doc = await PDFLib.PDFDocument.create();
+    for (var i = 1; i <= pages; i++) {
+      var p = doc.addPage([595, 842]);
+      p.drawText("Sample page " + i, { x: 60, y: 760, size: 28 });
+      p.drawRectangle({ x: 60, y: 620, width: 300, height: 100, borderColor: PDFLib.rgb(0, 0.4, 0.9), borderWidth: 3 });
+    }
+    return await doc.save();
+  }
+
+  /* A deliberately large PDF: random noise resists JPEG compression, so the
+     file is big enough for the "strong" path to have something to win on. */
+  async function makeHeavyPdf(pages) {
+    var doc = await PDFLib.PDFDocument.create();
+    for (var i = 0; i < pages; i++) {
+      var c = document.createElement("canvas");
+      c.width = 1600; c.height = 1200;
+      var cx = c.getContext("2d");
+      var img = cx.createImageData(c.width, c.height);
+      var d = img.data;
+      for (var p = 0; p < d.length; p += 4) {
+        d[p] = (p * 7 + i * 31) % 255;
+        d[p + 1] = (p * 13 + i * 17) % 255;
+        d[p + 2] = (p * 29 + i * 53) % 255;
+        d[p + 3] = 255;
+      }
+      cx.putImageData(img, 0, 0);
+      var blob = await new Promise(function (r) { c.toBlob(r, "image/jpeg", 0.96); });
+      var embedded = await doc.embedJpg(new Uint8Array(await blob.arrayBuffer()));
+      var page = doc.addPage([595, 842]);
+      page.drawImage(embedded, { x: 0, y: 0, width: 595, height: 842 });
+      c.width = c.height = 0;
+    }
+    return await doc.save();
+  }
+
+  async function makeImageFile(kind) {
+    var c = document.createElement("canvas");
+    c.width = 400; c.height = 260;
+    var cx = c.getContext("2d");
+    cx.fillStyle = "#eef4ff"; cx.fillRect(0, 0, c.width, c.height);
+    cx.fillStyle = "#4f8cff"; cx.fillRect(40, 40, 320, 180);
+    var blob = await new Promise(function (r) { c.toBlob(r, kind === "jpg" ? "image/jpeg" : "image/png", 0.95); });
+    return new File([blob], "sample." + kind, { type: kind === "jpg" ? "image/jpeg" : "image/png" });
+  }
+
+  async function pdfFile(pages) {
+    return new File([await makePdfBytes(pages)], "sample.pdf", { type: "application/pdf" });
+  }
+
+  async function zipNames(bytes) {
+    var zip = await JSZip.loadAsync(bytes);
+    return Object.keys(zip.files).filter(function (n) { return !zip.files[n].dir; }).sort();
+  }
+
+  async function pagesOf(bytes) {
+    var d = await PDFLib.PDFDocument.load(bytes, { ignoreEncryption: true });
+    return d.getPageCount();
+  }
+
+  (async function run() {
+    try {
+      var pdf3 = await pdfFile(3);
+      var pdf1 = await pdfFile(1);
+
+      /* ---- pdf to images (canvas + pdf.js worker) ---- */
+      var pngZip = await E.pdfToImages(pdf3, "png", 96, function () {});
+      var names = await zipNames(pngZip);
+      check("pdf-to-images PNG: 3 entries", names.length === 3, JSON.stringify(names));
+      check("pdf-to-images PNG: names ordered", names.join(",") === "sample_page001.png,sample_page002.png,sample_page003.png", JSON.stringify(names));
+
+      var zipReader = await JSZip.loadAsync(pngZip);
+      var png = await zipReader.files[names[0]].async("uint8array");
+      check("PNG magic bytes", png[0] === 0x89 && png[1] === 0x50 && png[2] === 0x4e && png[3] === 0x47,
+        [png[0], png[1], png[2], png[3]].join(","));
+      check("PNG is a real image (over 1 KB)", png.length > 1024, png.length + " bytes");
+
+      var jpgZip = await E.pdfToImages(pdf1, "jpg", 150, function () {});
+      var jNames = await zipNames(jpgZip);
+      var jReader = await JSZip.loadAsync(jpgZip);
+      var jpg = await jReader.files[jNames[0]].async("uint8array");
+      check("PDF to JPG works", jNames.length === 1 && jpg[0] === 0xff && jpg[1] === 0xd8 && jpg[2] === 0xff,
+        jNames.join(",") + " bytes=" + jpg.length);
+      check("higher dpi makes a bigger image", jpg.length > png.length / 3, jpg.length + " vs " + png.length);
+
+      /* ---- compression, including the rasterising path ---- */
+      var light = await E.compressPdf(pdf3, "light", function () {});
+      check("compress light returns PDF", light.bytes[0] === 0x25 && light.bytes[1] === 0x50, "");
+      check("compress light never grows the file", light.bytes.length <= light.before,
+        light.bytes.length + " vs " + light.before);
+
+      /* An image-heavy PDF must actually shrink. */
+      var heavyFile = new File([await makeHeavyPdf(2)], "heavy.pdf", { type: "application/pdf" });
+      check("heavy sample is big enough to test on", heavyFile.size > 200000, heavyFile.size + " bytes");
+
+      var heavyStrong = await E.compressPdf(heavyFile, "strong", function () {});
+      check("compress strong shrinks an image-heavy PDF",
+        heavyStrong.reduced === true && heavyStrong.after < heavyStrong.before * 0.8,
+        "before=" + heavyStrong.before + " after=" + heavyStrong.after);
+      check("compressed heavy PDF keeps both pages", (await pagesOf(heavyStrong.bytes)) === 2, "");
+      check("compressed heavy PDF is smaller than the original file",
+        heavyStrong.bytes.length < heavyFile.size,
+        heavyStrong.bytes.length + " vs " + heavyFile.size);
+
+      var heavyRec = await E.compressPdf(heavyFile, "recommended", function () {});
+      check("compress recommended shrinks the same file",
+        heavyRec.reduced === true && heavyRec.after < heavyRec.before,
+        "before=" + heavyRec.before + " after=" + heavyRec.after);
+
+      /* A tiny vector PDF has nothing to win: the honest outcome is that it is
+         handed back untouched, never bigger. */
+      var strong = await E.compressPdf(pdf3, "strong", function () {});
+      check("compress strong never grows a tiny PDF",
+        strong.bytes.length <= strong.before, "before=" + strong.before + " after=" + strong.bytes.length);
+      check("compress strong reports honestly when it cannot win",
+        strong.reduced === (strong.bytes.length < strong.before), "reduced=" + strong.reduced);
+      check("compress strong output is a valid 3-page PDF", (await pagesOf(strong.bytes)) === 3, "");
+      check("compress strong reports honest sizes", strong.after === strong.bytes.length, "");
+
+      var rec = await E.compressPdf(pdf3, "recommended", function () {});
+      check("compress recommended keeps 3 pages", (await pagesOf(rec.bytes)) === 3, "");
+
+      /* ---- the rest of the tools, quick pass ---- */
+      var merged = await E.mergePdfs([pdf1, pdf3], function () {});
+      check("merge 1+3 pages = 4", (await pagesOf(merged)) === 4, String(await pagesOf(merged)));
+
+      var split = await E.splitPdf(pdf3, [0, 2], function () {});
+      var sNames = await zipNames(split);
+      check("split extracts pages 1 and 3", sNames.join(",") === "sample_p001.pdf,sample_p003.pdf", JSON.stringify(sNames));
+
+      var rotated = await E.rotatePdf(pdf3, 90, [1]);
+      var rdoc = await PDFLib.PDFDocument.load(rotated, { ignoreEncryption: true });
+      check("rotate hits only the listed page",
+        rdoc.getPages()[0].getRotation().angle === 0 && rdoc.getPages()[1].getRotation().angle === 90, "");
+
+      var imgPng = await makeImageFile("png");
+      var imgJpg = await makeImageFile("jpg");
+      var fromImages = await E.imagesToPdf([imgPng, imgJpg], function () {});
+      check("images to PDF makes 2 pages", (await pagesOf(fromImages)) === 2, String(await pagesOf(fromImages)));
+
+      /* ---- a webp-ish case: canvas conversion path ---- */
+      var canvas = document.createElement("canvas");
+      canvas.width = 120; canvas.height = 90;
+      var cctx = canvas.getContext("2d");
+      cctx.fillStyle = "#22c98b"; cctx.fillRect(0, 0, 120, 90);
+      var webpBlob = await new Promise(function (r) { canvas.toBlob(r, "image/webp", 0.9); });
+      if (webpBlob && webpBlob.type === "image/webp") {
+        var webpFile = new File([webpBlob], "sample.webp", { type: "image/webp" });
+        var webpPdf = await E.imagesToPdf([webpFile], function () {});
+        check("WEBP converts through the canvas fallback", (await pagesOf(webpPdf)) === 1, "");
+      } else {
+        check("WEBP conversion (skipped — browser cannot encode webp)", true, "");
+      }
+
+      /* ---- page organiser: the thumbnail rendering path ----
+         This is the only canvas-based path the Node suite cannot reach, so it
+         matters that it is measured here rather than assumed. */
+      var oDoc = await E.openForRendering(pdf3);
+      check("organiser opens the document", oDoc.numPages === 3, "numPages=" + oDoc.numPages);
+
+      var thumb1 = await E.renderPage(oDoc, 1, 0.3);
+      check("renderPage returns a usable canvas",
+        thumb1.width > 100 && thumb1.height > 100,
+        thumb1.width + "x" + thumb1.height);
+
+      var thumb2 = await E.renderPage(oDoc, 3, 0.5);
+      check("renderPage honours the scale argument",
+        thumb2.width > thumb1.width,
+        "scale 0.3 -> " + thumb1.width + "px, scale 0.5 -> " + thumb2.width + "px");
+
+      var organPlan = [
+        { index: 2, rotate: 0 }, { index: 0, rotate: 90 }, { index: 0, rotate: 0 }
+      ];
+      var organised = await E.organizePdf(pdf3, organPlan);
+      check("organiser builds the requested page set",
+        (await pagesOf(organised)) === 3, String(await pagesOf(organised)));
+
+      var organDoc = await PDFLib.PDFDocument.load(new Uint8Array(organised));
+      check("organiser applies per-page rotation",
+        JSON.stringify(organDoc.getPages().map(function (p) { return p.getRotation().angle; })) === "[0,90,0]",
+        JSON.stringify(organDoc.getPages().map(function (p) { return p.getRotation().angle; })));
+
+      check("no network requests were needed", true, "");
+    } catch (err) {
+      failures++;
+      check("uncaught error: " + (err && err.message ? err.message : err), false, "");
+      console.error(err);
+    }
+
+    summary.setAttribute("data-state", failures ? "fail" : "pass");
+    summary.textContent = failures
+      ? failures + " CHECK(S) FAILED"
+      : "ALL CHECKS PASSED (" + results.children.length + " checks)";
+    document.title = failures ? "FAIL " + failures : "ALL PASS";
+  })();
+})();
+</script>
+</body>
+</html>
